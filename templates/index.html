@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text Sentiment Analyzer</title>
     <style>
         /* General Styling */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f0f8ff;
             margin: 0;
             padding: 0;
             color: #333;
@@ -18,17 +20,19 @@
 
         h1 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-top: 20px;
+            font-size: 2.5em;
+            color: #2c3e50;
         }
 
         /* Container for Content */
         .container {
             max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
+            margin: 40px auto;
+            padding: 30px;
             background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
 
         /* Form Styling */
@@ -38,50 +42,82 @@
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #2c3e50;
         }
 
         textarea {
-            width: 95%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1.1em;
             resize: vertical;
         }
 
         input[type="submit"] {
-            background-color: #4CAF50;
+            background-color: #3498db;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 1.1em;
         }
 
         input[type="submit"]:hover {
-            background-color: #45a049;
+            background-color: #2980b9;
         }
 
         /* Analysis Results */
+        .results {
+            margin-top: 20px;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            margin-top: 15px;
+            color: #2c3e50;
+        }
+
         ul {
             list-style-type: none;
             padding: 0;
+            font-size: 1.1em;
         }
 
         li {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Icons for Analysis Feedback */
+        li::before {
+            content: "💬 ";
+            font-size: 1.2em;
+            color: #3498db;
+            margin-right: 10px;
         }
 
         /* Responsive Design (for smaller screens) */
         @media (max-width: 600px) {
             .container {
-                margin: 10px;
-                padding: 10px;
+                margin: 20px;
+                padding: 20px;
             }
 
             textarea {
-                height: 120px; /* Adjust as needed */
+                height: 120px;
+            }
+
+            h1 {
+                font-size: 2em;
             }
         }
     </style>
@@ -89,28 +125,26 @@
 <body>
     <h1>Text Sentiment Analyzer</h1>
     <div class="container">
-    <form method="POST" class="analysis-form">
-        <label for="text">Enter your text:</label><br>
-        <textarea name="text" id="text" rows="10" cols="50"></textarea><br>
-        <input type="submit" value="Analyze">
-    </form>
+        <form method="POST" class="analysis-form">
+            <label for="text">Enter your text:</label>
+            <textarea name="text" id="text" rows="10" placeholder="Type something..."></textarea>
+            <input type="submit" value="Analyze">
+        </form>
 
-    <div class="results">
-    {% if results %}
-        <h2>Analysis Results:</h2>
-        <h3>You said:</h3>
-        <p>{{ text }}</p>
+        <div class="results">
+            {% if results %}
+                <h2>Analysis Results:</h2>
+                <h3>You said:</h3>
+                <p>{{ text }}</p>
 
-        <h3>Here's my analysis:</h3>
-        <ul>
-            {% for item in results.analysis_output %}
-                {{ item | safe }} 
-            {% endfor %}
-        </ul>
-
-        </ul>
-    {% endif %}
-    </div>
+                <h3>Here's my analysis:</h3>
+                <ul>
+                    {% for item in results.analysis_output %}
+                        {{ item | safe }} 
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>

@@ -19,7 +19,7 @@ def analyze_text(text):
     """
     Analyzes text to understand its emotional tone, like a friend listening 
     to your thoughts! It identifies key topics and gives you insights into 
-    how your words might be perceived. 
+    how your words might be perceived.
     """
     # Tokenization: Break down text into individual words
     tokens = word_tokenize(text)
@@ -52,36 +52,41 @@ def analyze_text(text):
     # --- Format output for HTML ---
     analysis_output = []
 
-    # analysis_output.append(f"<li>💬 You said: {text}</li>")
-
     # More expressive emotional responses
     if emotions['pos'] > emotions['neg']:
-        analysis_output.append(f"<li>🤔  Here's what I understand from what you've shared:  Wow, you sound incredibly upbeat and positive! 😄  Your words radiate joy! (Positivity: {emotions['pos']:.2f})</li>")
+        analysis_output.append(f"<li>🌟 Wow, your message radiates positivity! You're really bringing some sunshine into the world. (Positivity: {emotions['pos']:.2f})</li>")
     elif emotions['neg'] > emotions['pos']:
-        analysis_output.append(f"<li>🤔  Here's what I understand from what you've shared:  It seems like you're carrying a bit of weight on your shoulders. 😔 I'm here for you if you want to talk. (Negativity: {emotions['neg']:.2f})</li>")
+        analysis_output.append(f"<li>😢 I can sense you're going through something tough right now. It's okay to feel down. I'm here to listen. (Negativity: {emotions['neg']:.2f})</li>")
     else:
-        analysis_output.append(f"<li>🤔  Here's what I understand from what you've shared:  You seem to be approaching things with a calm and neutral perspective. 🤔  It's refreshing to see such balance!</li>")
+        analysis_output.append(f"<li>🧘 Your message seems balanced and calm, like you're taking a peaceful approach to things. (Neutrality: {emotions['neu']:.2f})</li>")
 
-    # More descriptive language for subjectivity
+    # Emotional intensity analysis
+    if emotions['compound'] > 0.5:
+        analysis_output.append("<li>😊 Your words are full of energy and enthusiasm! Keep that energy flowing!</li>")
+    elif emotions['compound'] < -0.5:
+        analysis_output.append("<li>😔 You sound deeply upset or worried. It’s okay, tough times pass. Stay strong!</li>")
+
+    # Subjectivity insights
     if blob.sentiment.subjectivity > 0.7:
-        analysis_output.append(f"<li> Your words are deeply personal and full of emotion. It's clear you're speaking from the heart. 🤔</li>")
+        analysis_output.append(f"<li>💭 You're sharing some deep personal thoughts and emotions. It's great to express yourself!</li>")
     elif blob.sentiment.subjectivity > 0.5:
-        analysis_output.append(f"<li> You're expressing yourself in a very personal and subjective way. 🤔</li>")
+        analysis_output.append(f"<li>🗣 You're being expressive, and it's clear you're talking from a personal perspective.</li>")
     else:
-        analysis_output.append(f"<li> Your words come across as quite objective and matter-of-fact. 🧐</li>")
+        analysis_output.append(f"<li>📊 Your words seem more matter-of-fact, you're keeping things clear and objective.</li>")
 
-    # More nuanced overall sentiment descriptions
+    # Overall sentiment feedback
     if blob.sentiment.polarity > 0.5:
-        analysis_output.append(f"<li> Overall, your message is a burst of sunshine!  Your positivity is contagious! ✨</li>")
+        analysis_output.append(f"<li>✨ Overall, your message shines with positivity. Keep it up!</li>")
     elif blob.sentiment.polarity > 0:
-        analysis_output.append(f"<li> Overall, your message gives off a positive vibe! ✨</li>")
+        analysis_output.append(f"<li>🙂 Your message has a nice positive vibe!</li>")
     elif blob.sentiment.polarity < -0.5:
-        analysis_output.append(f"<li> I'm truly sensing the weight of your words. 😔  Remember, you're not alone in this. </li>")
+        analysis_output.append(f"<li>😔 It seems like you're really going through a rough time. Remember, I'm here if you need to talk.</li>")
     elif blob.sentiment.polarity < 0:
-        analysis_output.append(f"<li> I'm sensing a bit of negativity in your words. 😔</li>")
+        analysis_output.append(f"<li>😕 There's a bit of negativity in your message. It's okay to feel this way sometimes.</li>")
     else:
-        analysis_output.append(f"<li> Your message seems pretty neutral.  Just sharing your thoughts? 🤔</li>")
+        analysis_output.append(f"<li>🤔 Your message seems neutral, just expressing some thoughts.</li>")
 
+    # Key phrases
     key_phrases_output = ", ".join([phrase[0] for phrase in key_phrases])
     analysis_output.append(f"<li>🔑 Key themes I'm picking up on: {key_phrases_output}</li>")
 
