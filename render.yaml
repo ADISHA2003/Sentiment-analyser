@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: sentiment-analyser  # Choose a name for your service
+    name: sentiment-analyser
     buildCommand: "pip install -r requirements.txt" 
     startCommand: "gunicorn nlp:app" 
     env: python
