@@ -111,6 +111,11 @@ def analyze_text(text):
         'analysis_output': analysis_output  # Add the formatted output
     }
 
+@app.route('/test', methods=['GET'])
+def test_route():
+    print("Test route hit!")
+    return "Test route successful!"
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
