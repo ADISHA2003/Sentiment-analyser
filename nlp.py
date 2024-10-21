@@ -1,4 +1,5 @@
 import nltk
+import os
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -7,13 +8,23 @@ from textblob import TextBlob
 from flask import Flask, render_template, request
 from datetime import datetime
 
-# Download required NLTK resources (only need to do this once)
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('wordnet')
-nltk.download('vader_lexicon')
-
 app = Flask(__name__)
+
+# Rename the global variable to avoid the name clash
+nltk_data_downloaded = False  
+
+# Download required NLTK resources (only need to do this once)
+@app.before_request
+def download_nltk_data():
+    """Downloads NLTK data and sets the data path (only once)."""
+    global nltk_data_downloaded  # Use the correct global variable name
+    if not nltk_data_downloaded:
+        nltk.download('punkt')
+        nltk.download('stopwords')
+        nltk.download('wordnet')
+        nltk.download('vader_lexicon')
+        nltk.data.path.append(os.path.join(app.root_path, 'nltk_data'))
+        nltk_data_downloaded = True  # Update the global variable
 
 def analyze_text(text):
     """
@@ -101,7 +112,10 @@ def analyze_text(text):
 def index():
     if request.method == "POST":
         user_text = request.form["text"]
-        analysis_results = analyze_text(user_text)
+        try:
+            analysis_results = analyze_text(user_text)
+        except Exception as e:
+            return render_template("index.html", error=f"An error occurred: {str(e)}")
         return render_template("index.html", results=analysis_results, text=user_text)
     else:
         return render_template("index.html", results=None)
