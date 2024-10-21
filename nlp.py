@@ -27,6 +27,7 @@ def download_nltk_data():
         nltk_data_downloaded = True  # Update the global variable
 
 def analyze_text(text):
+    print(f"Received text for analysis: {text}")
     """
     Analyzes text to understand its emotional tone, like a friend listening 
     to your thoughts! It identifies key topics and gives you insights into 
@@ -34,6 +35,7 @@ def analyze_text(text):
     """
     # Tokenization: Break down text into individual words
     tokens = word_tokenize(text)
+    print(f"Tokens after word_tokenize: {tokens}")
 
     # Remove stop words for more meaningful analysis
     stop_words = set(stopwords.words('english'))
@@ -101,6 +103,7 @@ def analyze_text(text):
     key_phrases_output = ", ".join([phrase[0] for phrase in key_phrases])
     analysis_output.append(f"<li>🔑 Key themes I'm picking up on: {key_phrases_output}</li>")
 
+    print(f"Analysis results: {analysis_output}")
     return {
         'vader_emotions': emotions,
         'textblob_sentiment': blob.sentiment,
